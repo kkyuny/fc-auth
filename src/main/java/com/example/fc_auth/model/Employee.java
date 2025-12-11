@@ -1,12 +1,18 @@
 package com.example.fc_auth.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+@Builder
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

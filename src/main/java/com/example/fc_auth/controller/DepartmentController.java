@@ -2,6 +2,7 @@ package com.example.fc_auth.controller;
 
 import com.example.fc_auth.model.Department;
 import com.example.fc_auth.service.DepartmentServcie;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 public class DepartmentController {
     private final DepartmentServcie departmentServcie;
 
+    @Operation(description = "전사 부서 조회")
     @GetMapping(value = "departments")
     public ResponseEntity<List<Department>> listAll() {
         return new ResponseEntity<>(departmentServcie.listEmployees(), HttpStatus.OK);

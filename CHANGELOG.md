@@ -1,4 +1,9 @@
 ## CHANGE LOG
+#### 4-3 Kakao Social Login 1
+사용자 관리: 인사팀은 신규입사자를 회원 등록한다.
+사용자 인증: 사용자는 id/pw를 입력하여 로그인한다.
+✅ 회원 등록
+✅ 카카오 소셜 로그인 지원
 
 #### 4-2 Swagger 문서와 JPA part2
 ✅ swagger 연동

@@ -15,4 +15,16 @@ public class EmployeeService {
     public List<Employee> listEmployee() {
         return employeeRepository.findAll();
     }
+
+    public Employee createEmployee(String firstName, String lastName, Long departmentId) {
+        Employee employee = Employee.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .departmentId(departmentId)
+                .build();
+        employeeRepository.save(employee);
+
+        return employee;
+    }
+
 }
