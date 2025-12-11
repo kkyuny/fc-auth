@@ -4,5 +4,6 @@ import org.springframework.http.ResponseEntity;
 
 public class LoginService {
     public ResponseEntity login(String code) {
+        return null;
     }
 }

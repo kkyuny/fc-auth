@@ -17,3 +17,4 @@ spring:
 kakao:
   client_id: 1f5c7bef903f764ffa451421371f62de
   redirect_uri: http://localhost:8080/kakao/callback
+  client_secret: nZ4fcTGg8rTe1DO8KTiXtn5QXD5lkKYV
