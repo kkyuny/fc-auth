@@ -20,6 +20,7 @@ public class Employee {
     private String firstName;
     private String lastName;
     private Long departmentId;
+    private String nickname;
     @ManyToMany
     @JoinTable(
             name = "employee_role_mapping",
