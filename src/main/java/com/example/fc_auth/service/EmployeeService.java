@@ -17,8 +17,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee createEmployee(String firstName, String lastName, Long departmentId, String nickname) {
-        if (employeeRepository.existsByNickname(nickname)){
+    public Employee createEmployee(String firstName, String lastName, Long departmentId, String kakaoNickName) {
+        if (employeeRepository.existsByKakaoNickName(kakaoNickName)){
             throw new DuplicateRequestException("닉네임이 존재합니다.");
         }
 
@@ -26,7 +26,7 @@ public class EmployeeService {
                 .firstName(firstName)
                 .lastName(lastName)
                 .departmentId(departmentId)
-                .nickname(nickname)
+                .kakaoNickName(kakaoNickName)
                 .build();
         employeeRepository.save(employee);
 

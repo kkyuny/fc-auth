@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class KakaoLoginController {
-    private final KakaoService loginService;
+    private final LoginService loginService;
 
     @GetMapping("/kakao/callback")
-    public String callback(@RequestParam("code")String code){
-        String token = loginService.getAccessTokenFromKakao(code);
-        return loginService.getUserFromKakao(token).getKakaoAccount().getProfile().getNickName();
+    public ResponseEntity callback(@RequestParam("code")String code) {
+        return loginService.login(code);
     }
 }

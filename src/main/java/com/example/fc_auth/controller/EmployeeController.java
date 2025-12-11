@@ -32,8 +32,8 @@ public class EmployeeController {
     public ResponseEntity<Employee> create(@RequestParam String firstName,
                                            @RequestParam String lastName,
                                            @RequestParam Long departmentId,
-                                           @RequestParam String nickName) {
-        Employee newEmployee = employeeService.createEmployee(firstName, lastName, departmentId, nickName);
+                                           @RequestParam String kakaoNickName) {
+        Employee newEmployee = employeeService.createEmployee(firstName, lastName, departmentId, kakaoNickName);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 }
