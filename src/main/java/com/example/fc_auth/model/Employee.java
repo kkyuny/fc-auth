@@ -21,11 +21,16 @@ public class Employee {
     private String lastName;
     private Long departmentId;
     private String kakaoNickName;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "employee_role_mapping",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),           // 현재 엔티티(Employee)의 FK
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")         // 반대 엔티티(Role)의 FK
     )
     private Set<Role> roles;
+
+    public static boolean isHR(Employee employee){
+        Set<Role> roles = employee.getRoles();
+        return roles.stream().anyMatch(r -> r.getName().equals("인사팀"));
+    }
 }

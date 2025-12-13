@@ -27,7 +27,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.listEmployee(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/employees",
+    @PostMapping(value = "/admin/employees",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> create(@RequestParam String firstName,
                                            @RequestParam String lastName,

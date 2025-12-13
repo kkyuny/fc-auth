@@ -33,7 +33,6 @@ public class JwtUtil {
             claims.put("roles", Collections.emptySet());
         }
 
-
         return Jwts.builder()
                 .subject(String.valueOf(employee.getId()))
                 .claims(claims)
