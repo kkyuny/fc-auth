@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
     private static final String[] AUTH_ALLOWLIST = {
-        "/swagger-ui/**", "v3/**"
+        "/swagger-ui/**", "v3/**", "/login/**", "images/**", "/kakao/**"
     };
 
     @Bean

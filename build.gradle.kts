@@ -31,6 +31,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly("com.mysql:mysql-connector-j")
 
+	// jwt
+	implementation("io.jsonwebtoken:jjwt-api:0.12.7")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.7")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
+
 	// lombok
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
@@ -41,6 +46,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
 tasks.withType<Test> {
