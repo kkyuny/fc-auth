@@ -6,6 +6,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
@@ -33,19 +35,19 @@ public class JwtUtil {
 
 
         return Jwts.builder()
-                .setSubject(String.valueOf(employee.getId()))
+                .subject(String.valueOf(employee.getId()))
                 .claims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expireAt)
+                .issuedAt(now)
+                .expiration(expireAt)
                 .signWith(SECRET_KEY)
                 .compact();
     }
 
     public static Claims parseToken(String token){
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .verifyWith((SecretKey) SECRET_KEY)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
