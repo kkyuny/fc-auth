@@ -27,10 +27,10 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),           // 현재 엔티티(Employee)의 FK
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")         // 반대 엔티티(Role)의 FK
     )
-    private Set<Role> roles;
+    private Set<EmployeeRole> employeeRoles;
 
-    public static boolean isHR(Employee employee){
-        Set<Role> roles = employee.getRoles();
-        return roles.stream().anyMatch(r -> r.getName().equals("인사팀"));
+    public static boolean isHR(Employee employee) {
+        Set<EmployeeRole> employeeRoles = employee.getEmployeeRoles();
+        return employeeRoles.stream().anyMatch(r -> r.getName().equals("인사팀"));
     }
 }

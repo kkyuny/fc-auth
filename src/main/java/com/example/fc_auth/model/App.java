@@ -20,4 +20,8 @@ public class App {
     @OneToMany
     @JoinColumn(name="app_id")
     private List<Api> apis;
+
+    @OneToMany
+    @JoinColumn(name="app_id")
+    private List<AppRole> appRoles;
 }
