@@ -1,13 +1,13 @@
 package com.example.fc_auth.util;
 
+import com.example.fc_auth.model.App;
+import com.example.fc_auth.model.AppRole;
 import com.example.fc_auth.model.Employee;
 import com.example.fc_auth.model.EmployeeRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
-import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
@@ -19,7 +19,24 @@ public class JwtUtil {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long expirationTimeInMills = 1000 * 60 * 60; // 1hr
 
-    public static String createToken(Employee employee){
+    public static String createAppToken(App app){
+        Date now = new Date();
+        Date expireAt = new Date(now.getTime() + expirationTimeInMills);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "app");
+
+        claims.put("roles", app.getAppRoles().stream().map(AppRole::getApi).collect(Collectors.toSet()));
+        return Jwts.builder()
+                .setSubject(String.valueOf(app.getId()))
+                .claims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expireAt)
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+
+    public static String createUserToken(Employee employee){
 
         Date now = new Date();
         Date expireAt = new Date(now.getTime() + expirationTimeInMills);
@@ -34,19 +51,19 @@ public class JwtUtil {
         }
 
         return Jwts.builder()
-                .subject(String.valueOf(employee.getId()))
+                .setSubject(String.valueOf(employee.getId()))
                 .claims(claims)
-                .issuedAt(now)
-                .expiration(expireAt)
+                .setIssuedAt(now)
+                .setExpiration(expireAt)
                 .signWith(SECRET_KEY)
                 .compact();
     }
 
     public static Claims parseToken(String token){
         return Jwts.parser()
-                .verifyWith((SecretKey) SECRET_KEY)
+                .setSigningKey(SECRET_KEY)
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
