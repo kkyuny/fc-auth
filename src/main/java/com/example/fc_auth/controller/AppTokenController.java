@@ -1,6 +1,7 @@
 package com.example.fc_auth.controller;
 
 import com.example.fc_auth.dto.AppTokenRespDto;
+import com.example.fc_auth.dto.ValidateTokenDto;
 import com.example.fc_auth.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
