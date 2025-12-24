@@ -18,3 +18,8 @@ docker desktop 실행   https://www.docker.com/products/docker-desktop/
 
 minikube start 혹은 minikube start --vm-driver=docker
 5. kubectl get all
+
+6. https://hub.docker.com/ 가입 후 image push를 통해 레포지토리 만들기
+
+docker build -t {hub id}/{repo name}:0.0 .
+docker push {hub id}/{repo name}:0.0
