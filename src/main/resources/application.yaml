@@ -3,7 +3,7 @@ spring:
     name: fc-auth
   datasource:
     url: jdbc:mysql://localhost:3313/fc-auth?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-    username: root
+    username: testuser
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
