@@ -1,4 +1,9 @@
 ## CHANGE LOG
+#### 6-1 K8S 배포 1
+✅ multi 환경을 위한 application properties 설정
+✅ 환경 구축하기
+✅ Mysql k8s 클러스터 배포
+
 #### 5-5 App2app 2
 ✅ app2app 토큰 발급
 ✅ app2app 토큰 밸리데이션
