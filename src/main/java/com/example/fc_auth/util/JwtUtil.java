@@ -1,13 +1,15 @@
 package com.example.fc_auth.util;
 
-import com.example.fc_auth.model.App;
-import com.example.fc_auth.model.AppRole;
-import com.example.fc_auth.model.Employee;
-import com.example.fc_auth.model.EmployeeRole;
+import com.example.fc_auth.dto.ValidateTokenDto;
+import com.example.fc_auth.model.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
@@ -26,7 +28,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("type", "app");
 
-        claims.put("roles", app.getAppRoles().stream().map(AppRole::getApi).collect(Collectors.toSet()));
+        claims.put("roles", app.getAppRoles().stream().map(AppRole::getApi).map(Api::getId).collect(Collectors.toSet()));
         return Jwts.builder()
                 .setSubject(String.valueOf(app.getId()))
                 .claims(claims)
@@ -65,5 +67,29 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public static ResponseEntity<String> validateAppToken(ValidateTokenDto dto, Api api) {
+        Claims claims;
+        try {
+            claims = parseToken(dto.getToken());
+        } catch (Exception e){
+            return new ResponseEntity<>("invalid token", HttpStatus.UNAUTHORIZED);
+        }
+
+        Date now = new Date();
+        if(claims.getExpiration().before(now)) {
+            return new ResponseEntity<>("token expired.", HttpStatus.UNAUTHORIZED);
+        }
+        if(!StringUtils.equals("app", claims.get("type").toString())){
+            return new ResponseEntity<>("invalid token type", HttpStatus.UNAUTHORIZED);
+        }
+
+        String roles = claims.get("roles").toString();
+        if(roles.contains(api.getId().toString())){
+            return new ResponseEntity<>("권한이 존재합니다.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
     }
 }

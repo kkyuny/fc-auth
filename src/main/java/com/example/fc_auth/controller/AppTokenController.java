@@ -26,4 +26,11 @@ public class AppTokenController {
         AppTokenRespDto dto = tokenService.createAppToken(appId);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
+    @Operation(description = "토큰 밸리데이션")
+    @PostMapping(value = "/validate",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> validateAppToken(ValidateTokenDto dto){
+        return tokenService.validateToken(dto);
+    }
 }
