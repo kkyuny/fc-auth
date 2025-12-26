@@ -13,6 +13,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  redis:
+    host: localhost
+    port: 6379
 
 kakao:
   client_id: 1f5c7bef903f764ffa451421371f62de

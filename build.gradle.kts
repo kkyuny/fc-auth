@@ -32,6 +32,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly("com.mysql:mysql-connector-j")
 
+	// cache
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 	// jwt
 	implementation("io.jsonwebtoken:jjwt-api:0.12.7")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.7")
