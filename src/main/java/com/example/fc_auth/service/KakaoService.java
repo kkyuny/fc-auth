@@ -2,7 +2,6 @@ package com.example.fc_auth.service;
 
 import com.example.fc_auth.model.KakaoTokenRespDto;
 import com.example.fc_auth.model.KakaoUserInfoRespDto;
-import io.netty.handler.codec.http.HttpHeaderValues;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -32,7 +31,8 @@ public class KakaoService {
                         .path("/v2/user/me")
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer "+accessToken)
-                .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
+                .header(HttpHeaders.CONTENT_TYPE,
+                        MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .retrieve()
                 .bodyToMono(KakaoUserInfoRespDto.class)
                 .block();
