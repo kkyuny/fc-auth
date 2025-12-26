@@ -1,4 +1,8 @@
 ## CHANGE LOG
+#### 7-1 redis 셋업
+✅ 로컬 레디스 셋업
+✅ 스프링 어플리케이션에 로컬 레디스 연동
+
 #### 6-2 K8S 배포 2
 ✅ k8s 용 application properties 만들기
 ✅ docker image 만들기
