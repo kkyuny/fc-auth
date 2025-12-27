@@ -1,4 +1,7 @@
 ## CHANGE LOG
+#### 7-2 threshold 기능 적용하기
+✅ threshold, throttling 기능 (token bucket)
+
 #### 7-1 redis 셋업
 ✅ 로컬 레디스 셋업
 ✅ 스프링 어플리케이션에 로컬 레디스 연동

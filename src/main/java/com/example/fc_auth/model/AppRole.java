@@ -17,4 +17,9 @@ public class AppRole {
     @OneToOne
     @JoinColumn(name = "api_id", referencedColumnName = "id")
     private Api api;
+
+    @Column(name = "app_id")
+    private Long appId;
+
+    private Integer threshold;
 }
