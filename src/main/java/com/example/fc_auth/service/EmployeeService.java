@@ -5,10 +5,12 @@ import com.example.fc_auth.repository.EmployeeRepository;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,6 +39,11 @@ public class EmployeeService {
         employeeRepository.save(employee);
 
         return employee;
+    }
+
+    @Cacheable(cacheNames = "employee", key = "#id")
+    public Employee findEmployeeById(Long id) {
+        return employeeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("id를 찾을수 없습니다"));
     }
 
 }
