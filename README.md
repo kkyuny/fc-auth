@@ -35,8 +35,13 @@
 
 ### 2. JwtAuthFilter 역할
 -`OncePerRequestFilter` 상속 → 요청당 한 번 실행
+- 실질적 인증 처리 담당
+    - 모든 요청에서 JWT 토큰 확인 → 주체(사용자 또는 앱) 식별 
+- SecurityContext에 Authentication(인증정보) 객체 등록
+    - 이후 @AuthenticationPrincipal, SecurityContextHolder 등을 통해 컨트롤러에서 사용자/앱 정보 접근 가능
+- JWT 기반 인증 구조에서는 모든 요청에서 토큰 검증 필수
 
-### 3. 동작 과정
+### 3. JwtAuthFilter 동작 과정
 1) **Authorization 헤더 확인**
     - "Bearer "로 시작하면 JWT 토큰 추출
 2) **KakaoService 호출**
@@ -77,6 +82,22 @@ DispatcherServlet
 HandlerInterceptor
 ```
 
+### 5. 정리
+- Spring Security는 `설정(SecurityConfig) + 인증/인가 처리 로직(필터, 토큰(jwt 등등) 인증)` 중심으로 동작.
+- SecurityConfig
+    - 필터 체인 정의
+    - URL 접근 제어(허용/거부)
+    - CSRF, CORS, 세션 정책 등 환경 설정
+    - 필터 순서와 위치 결정
+- JWT 유틸/서비스
+    - JWT 생성, 서명, 만료 관리
+    - 토큰 payload 검증, claim 추출
+    - App2App/사용자 토큰 모두 처리
+- JwtAuthFilter (혹은 커스텀 필터)
+    - 요청당 JWT 검증
+    - 주체 식별(사용자 또는 앱)
+    - 권한 설정 → SecurityContext 등록
+    - 필터 체인 계속 진행
 ## [5-3] RBAC(Role-Based Access Control)
 
 ### RBAC 개요
