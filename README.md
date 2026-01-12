@@ -98,6 +98,7 @@ HandlerInterceptor
     - 주체 식별(사용자 또는 앱)
     - 권한 설정 → SecurityContext 등록
     - 필터 체인 계속 진행
+
 ## [5-3] RBAC(Role-Based Access Control)
 
 ### RBAC 개요
@@ -113,15 +114,14 @@ HandlerInterceptor
 - `hasRole("USER")` → 내부 비교값: `ROLE_USER`
 
 ### JwtAuthFilter 내 RBAC 설정
-
-### 권한 목록 생성
+**1) 권한 목록 생성**
 ```java
 List<GrantedAuthority> authorities = new ArrayList<>();
 authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 ```
 - 인증된 모든 사용자에게 기본 USER 권한 부여
 
-### 조건부 Role 추가 (다중 Role)
+**2) 조건부 Role 추가 (다중 Role)**
 ```java
 if (Employee.isHR(employee)) {
     authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -130,7 +130,7 @@ if (Employee.isHR(employee)) {
 - 도메인 로직 기반 Role 판별
 - HR 직원은 USER + ADMIN Role 동시 보유
 
-### Authentication 객체와 RBAC
+**3) Authentication 객체와 RBAC**
 ```java
 Authentication authentication =
     new TestingAuthenticationToken(
@@ -146,19 +146,33 @@ Authentication authentication =
 ```java
 SecurityContextHolder.getContext().setAuthentication(authentication);
 ```
+- JWT 인증 필터에서 적용
 - 이후 모든 계층에서 Role 기반 접근 제어 가능
     - URL 보안 설정
         ```java
-        .requestMatchers("/admin/**").hasRole("ADMIN")
+        http.authorizeHttpRequests(authorize -> authorize
+            .requestMatchers(AUTH_ALLOWLIST).permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        );
         ```
+        - /admin/**에는 ADMIN만 허용
     - 메서드 보안
         ```java
         @PreAuthorize("hasRole('ADMIN')")
+        public void deleteUser(Long userId) {
+            ...
+        }
         ```
 - 컨트롤러에서 사용자 정보 접근 가능
     ```java
-    @AuthenticationPrincipal
+    @GetMapping("/me")
+    public UserDto me(@AuthenticationPrincipal CustomUser user) {
+        return UserDto.from(user);
+    }
     ```
+    - SecurityContext에 저장된 현재 로그인 사용자 객체를 바로 꺼내 쓰는 것
+    - SecurityContextHolder.getContext().getAuthentication().getPrincipal()의 축약이다.
 
 ### 정리
 - RBAC 핵심 데이터: GrantedAuthority 목록
