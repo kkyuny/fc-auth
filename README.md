@@ -13,6 +13,11 @@
 2. API 접근 → 토큰 검증 → 권한 확인 → 접근 허용/거부
 3. 필요 시 App2App 토큰 사용 → 시스템 간 안전한 호출(시스템 간 인증/인가 수행)
 
+## JWT 토큰
+- **JWT(Json Web Token)**: JSON 기반의 토큰
+- 헤더(Header) + 페이로드(Payload) + 서명(Signature)으로 구성
+- 서버가 발급 → 클라이언트/앱이 들고 다니며 서명으로 검증
+
 ## [5-1 ~ 2] Spring Security / JWT 필터 정리
 ### 1. SecurityConfig 역할
 -`@EnableWebSecurity` + `SecurityFilterChain` 설정으로 **보안 필터 체인 구성**
