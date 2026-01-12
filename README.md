@@ -203,3 +203,12 @@ sequenceDiagram
     App2-->>App1: (5) 기능 제공
 ```
 
+## [7-1] Redis 
+### Spring Cache Annotations
+- Cache 어노테이션을 사용하면 RedisTemplate 없이 Redis를 동작시킬 수 있다.
+| 어노테이션         | 동작 요약                            | 목적 / 사용 상황            | 간단 예제 코드                                                                                                                                         |
+| ------------- | -------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@Cacheable`  | 캐시에 값이 있으면 메서드 실행 X, 없으면 실행 후 저장 | 조회 최적화, DB 호출 줄이기     | `@Cacheable(value="users", key="#id") public User getUser(Long id)`                                                                              |
+| `@CachePut`   | 메서드를 항상 실행 후 결과를 캐시에 저장          | 캐시 갱신, 데이터 동기화        | `@CachePut(value="users", key="#user.id") public User updateUser(User user)`                                                                     |
+| `@CacheEvict` | 캐시에서 특정 데이터 삭제                   | 삭제, 캐시 초기화, TTL 이전 삭제 | `@CacheEvict(value="users", key="#id") public void deleteUser(Long id)`                                                                          |
+| `@Caching`    | 여러 캐시 동작을 한 메서드에 적용              | 복합적인 캐시 처리            | `@Caching(put=@CachePut(value="users", key="#user.id"), evict=@CacheEvict(value="allUsers", allEntries=true)) public User updateUser(User user)` |
