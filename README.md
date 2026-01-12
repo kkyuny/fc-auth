@@ -181,3 +181,20 @@ SecurityContextHolder.getContext().setAuthentication(authentication);
     - Role 판별
     - SecurityContext에 Role 포함 Authentication 저장
     - 이후 Spring Security가 자동으로 인가 처리
+
+## [5-4 ~ 5] App2App 인증
+### 개요: 사용자 없이 애플리케이션 간에 인증·인가를 수행하는 구조
+### 인증 흐름
+``` mermaid
+sequenceDiagram
+    participant App1
+    participant AuthServer as Auth Server
+    participant App2
+
+    App1->>AuthServer: (1) client_id / secret
+    AuthServer-->>App1: (2) JWT 발급
+    App1->>App2: (3) Authorization: Bearer JWT
+    App2->>AuthServer: (4) JWT 검증
+    App2-->>App1: (5) 기능 제공
+```
+
