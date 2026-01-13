@@ -17,7 +17,19 @@
 - **JWT(Json Web Token)**: JSON 기반의 토큰
 - 헤더(Header) + 페이로드(Payload) + 서명(Signature)으로 구성
 - 서버가 발급 → 클라이언트/앱이 들고 다니며 서명으로 검증
-
+```java
+return Jwts.builder()
+        .setSubject("userId123") // sub: 토큰 주체 (보통 사용자 ID)
+        .setIssuer("fc-auth")    // iss: 토큰 발급자
+        .setIssuedAt(new Date()) // iat: 토큰 발급 시각
+        .setExpiration(          // exp: 토큰 만료 시각
+                new Date(System.currentTimeMillis() + EXP_MS)
+        )
+        .claim("role", "ADMIN") // custom claim: 사용자 권한
+        .claim("appId", 10L)    // custom claim: 애플리케이션 ID
+        .signWith(SECRET_KEY)   // 서명: 위변조 방지용 키
+        .compact();             // JWT 문자열 생성
+```
 ## [5-1 ~ 2] Spring Security / JWT 필터 정리
 ### 1. SecurityConfig 역할
 -`@EnableWebSecurity` + `SecurityFilterChain` 설정으로 **보안 필터 체인 구성**
@@ -229,7 +241,7 @@ sequenceDiagram
     - API 호출: 분당 100회
     - 로그인 시도: 5회 초과 시 차단
     - 메시지 전송: 초당 10건
-    > "이 기준(threshold)을 넘으면 제한한다"
+        > "이 기준(threshold)을 넘으면 제한한다"
 
 ### Throttling
 - Threshold를 **초과했을 때 적용하는 제어 행위**
