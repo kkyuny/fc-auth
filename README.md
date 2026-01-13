@@ -239,3 +239,33 @@ sequenceDiagram
 - Threshold = 버킷에 담을 수 있는 **최대 토큰 수**
 - 요청 1건 = 토큰 1개 소비
 - 토큰이 0이 되면 → Throttling 발생 (요청 제한)
+
+### 예시코드
+``` java
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class CustomRateLimiter {
+    private final Map<String, Bucket> keyToBucketMap = new ConcurrentHashMap<>();
+    private final Duration REFILL_PERIOD_ONE_MINUTE = Duration.ofMinutes(1L);
+
+    private final AppRoleRepository appRoleRepository;
+
+    public boolean tryConsume(Long appId, Long apiId){
+        String key = appId.toString() + ":" + apiId.toString();
+        Bucket bucket = keyToBucketMap.computeIfAbsent(key, k-> createBucket(appId, apiId));
+
+        log.info(String.format("throttling : %s count ++1", key));
+        return bucket.tryConsume(1);
+    }
+
+    public LocalBucket createBucket(Long appId, Long apiId){
+        Integer threshold = appRoleRepository.findByAppIdAndApiId(appId, apiId).getThreshold();
+        return Bucket.builder()
+                .addLimit(BandwidthBuilder.builder().capacity(threshold).refillIntervally(threshold, REFILL_PERIOD_ONE_MINUTE).build())
+                .build();
+    }
+}
+```
+- 버킷을 생성하며 Threshold 설정
+- 컨슘에서 Threshold 초과 시 false를 반환하여 Throttling을 수행
