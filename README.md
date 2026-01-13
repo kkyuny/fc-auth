@@ -213,3 +213,29 @@ sequenceDiagram
 | `@CachePut` | 메서드를 항상 실행 후 결과를 캐시에 저장 | 캐시 갱신, 데이터 동기화 | `@CachePut(value="users", key="#user.id")`<br>`public User updateUser(User user)` |
 | `@CacheEvict` | 캐시에서 특정 데이터 삭제 | 삭제, 캐시 초기화 | `@CacheEvict(value="users", key="#id")`<br>`public void deleteUser(Long id)` |
 | `@Caching` | 여러 캐시 동작을 한 메서드에 적용 | 복합적인 캐시 처리 | `@Caching(` <br>` put=@CachePut(value="users", key="#user.id"),`<br>` evict=@CacheEvict(value="allUsers", allEntries=true)`<br>`)` |
+
+## [7-2] Threshold & Throttling
+
+### 사용이유
+- 서버 과부하 방지
+- 악성 트래픽 / 남용 방지
+- 자원 공정 분배
+- 비용 제어 (외부 API, DB 호출 등)
+
+### Threshold
+- 어떤 행위를 허용할 수 있는 **최대 한계값**
+- 보통 **시간 단위당 허용량**으로 정의됨
+- 예시
+    - API 호출: 분당 100회
+    - 로그인 시도: 5회 초과 시 차단
+    - 메시지 전송: 초당 10건
+    > "이 기준(threshold)을 넘으면 제한한다"
+
+### Throttling
+- Threshold를 **초과했을 때 적용하는 제어 행위**
+- 요청을 제한하거나 거부하거나 속도를 늦춤
+
+### Token Bucket
+- Threshold = 버킷에 담을 수 있는 **최대 토큰 수**
+- 요청 1건 = 토큰 1개 소비
+- 토큰이 0이 되면 → Throttling 발생 (요청 제한)
